@@ -9,7 +9,7 @@ At this CTF, our team (`LDGR`) finished at the first place.
 * [cairo-intro](./cairo-intro) (304)
 * [solve-me](./solve-me) (304)
 * [frozen-finance](./frozen) (331)
-* claim-a-punk (436)
+* [claim-a-punk](./claim-a-punk) (436)
 * [magic-encoding](./magic-encoding) (436)
 * [cairo-bid](./cairo-bid) (464)
 * [first-come-first-served](./first-comes-first-served) (464)
