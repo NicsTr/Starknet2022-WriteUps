@@ -193,6 +193,11 @@ and $2^{16}$ stored elliptic curve points. Once we obtain the values of $A_0$
 and $A_1$, we can quickly recover the values of each $a_i$ and in turn the
 17 values needed as input to the `test_password` function.
 
+As an additional optimisation of the bruteforce search, we precompute every
+possible partial point $[a_i]P_0$ such that during the actual search we only have to
+compute point additions and not scalar multiplications.
+
 Our implementation of this attack is written in
-[Sage](https://www.sagemath.org/) and it takes 100 cpu-seconds to run on our
-laptop's i7 processor. It is however important to note that in our case, the second step is terminating more quickly than expected for a random unique solution: we found the right $A_1$ after only 3% of the $2^{18}$ possible values. This may be due to the fact the solution $(A_0, A_1)$ is not unique in combination with luck.
+[Sage](https://www.sagemath.org/) and it takes around 7 cpu-seconds to run on our
+laptop's i7 processor. It is however important to note that in our case, the second step is terminating more quickly than expected for a random unique solution: we found the right $A_1$ after only 3% of the $2^{18}$ possible values. This may be due to the fact the solution $(A_0, A_1)$ is not unique in combination with luck. Nonetheless, going through all possible values would not take more than 35 seconds for our
+implementation.

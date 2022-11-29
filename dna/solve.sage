@@ -1,4 +1,5 @@
 from tqdm.contrib.itertools import product
+from functools import reduce
 
 def Init_Stark(curve_characteristic,curve_a, curve_b,Gx, Gy, curve_Order):    
 	Fp=GF(curve_characteristic); 				#Initialize Prime field of Point
@@ -101,26 +102,44 @@ vals_a1.append([131071, 2147483647, 524287, 8191])
 vals_a1.append([786433, 746497, 995329, 839809])
 vals_a1.append([9091, 101, 333667, 9901])
 
+# Precompute every possible scalar product. This leads to a huge performance
+# gain since we only have to do sum of point from now on.
+points_a0 = [[l[i]*P0 for i in range(4)] for l in vals_a0]
+points_a1 = [[l[i]*P0 for i in range(4)] for l in vals_a1]
+
+
+def every_sum_points(points, vals):
+    """
+    Quick way to compute every possible sum of points
+    """
+    for indexes in product(*[range(4)]*len(points)):
+        res, sum_val = reduce(lambda x, y: (x[0] + y[0], x[1] + y[1]),
+                [(points[i][j], vals[i][j]) for i,j in enumerate(indexes)])
+        yield res, sum_val
+
 def baby_step():
+    """
+    Compute every possible sum of points for the first half.
+    """
     bs_set = {}
-    for v in product(*vals_a0):
-        a = sum(v)
-        res = a*P0
-        bs_set[res] = a
+    for sum_point, sum_val in every_sum_points(points_a0, vals_a0):
+        bs_set[sum_point] = sum_val
     return bs_set
 
 def giant_step(bs_set, targets):
-    for v in product(*vals_a1):
-        a = sum(v)
-        res = a*P0
+    """
+    Compute every possible sum of points for the second half
+    then try to find a collision in the baby step set.
+    """
+    for sum_point, sum_val in every_sum_points(points_a1, vals_a1):
         for t in targets:
-            if t - res in bs_set:
-                return (bs_set[t - res], a)
+            if t - sum_point in bs_set:
+                return (bs_set[t - sum_point], sum_val)
 
-def retrieve_vals(vals, a):
+def retrieve_vals(vals, sum_val):
     for v in product(*vals):
-        a_tmp = sum(v)
-        if a_tmp != a:
+        tmp = sum(v)
+        if tmp != sum_val:
             continue
             
         true_val = [84, 71, 65, 67]
@@ -131,7 +150,6 @@ def retrieve_vals(vals, a):
 assert pedersen(137, 317) == (-863444159476502546088459186476947726748719122465837082380242773307767654571) % curve_characteristic
 
 if __name__ == "__main__":
-
     # Compute targets
     target_x = 3329738248317886966279794942297149793815292158761370755733235303955518040301
     target_ys = compute_y(Curve, target_x)
@@ -139,14 +157,14 @@ if __name__ == "__main__":
     # trying to find a such that a*P0 = target_point - Shift - low_b*P2
     target_points = [Curve(target_x, y) - Shift - low_b*P2 for y in target_ys]
 
-    # Running the search
+    print("[*] Running the search...")
     bs_set = baby_step()
     a0, a1 = giant_step(bs_set, target_points)
 
     # Check that we found the right value for a
     assert pedersen(a0 + a1, 317) == target_x
 
-    # Retrieve the 17 values
+    print("[*] Retrieve the value to craft a solution to the challenge...")
     res = []
     res += retrieve_vals(vals_a0, a0)
     res += retrieve_vals(vals_a1, a1)
