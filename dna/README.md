@@ -151,7 +151,7 @@ where
 $S, P_0, P_1, P_2, P_3$ are points that are fixed for `hash2` and $\cdot_\texttt{low}$ (respectively, $\cdot_\texttt{high}$) is the integer represented by the 248 lowest bits (respectively, 4 highest bits) of $\cdot$.
 
 
-### Finding an suitable value for `a`
+### Finding a suitable value for `a`
 
 In our case, since the value of `b` is fixed to `317` and since the highest reachable
 value for `a` is lower than $2^{248}$, the formula for the Pedersen hash can be simplified:
