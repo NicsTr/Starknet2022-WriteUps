@@ -13,7 +13,7 @@ At this CTF, our team (`LDGR`) finished at the first place.
 * [magic-encoding](./magic-encoding) (436)
 * [cairo-bid](./cairo-bid) (464)
 * [first-come-first-served](./first-comes-first-served) (464)
-* access-denied (475)
+* [access-denied](./access-denied) (475)
 * [puzzle-box](./puzzle-box) (475)
 * [unique-id](./unique-id) (475)
 * account-obstruction (500)
