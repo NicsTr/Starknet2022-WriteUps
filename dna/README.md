@@ -194,7 +194,7 @@ and $A_1$, we can quickly recover the values of each $a_i$ and in turn the
 17 values needed as input to the `test_password` function.
 
 As an additional optimisation of the bruteforce search, we precompute every
-possible partial point $[a_i]P_0$ such that during the actual search we only have to
+possible partial point $[a_i]P_1$ such that during the actual search we only have to
 compute point additions and not scalar multiplications.
 
 Our implementation of this attack is written in
