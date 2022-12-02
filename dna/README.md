@@ -131,7 +131,7 @@ In summary, this function:
 * increments an accumulator (that we call `a`) by the value returned by `test_value`;
 * after processing the 17 inputs, hashes this accumulator using
   `hash2(a, 317)`;
-* Compares this hash with the target value set in the storage variable
+* compares this hash with the target value set in the storage variable
   `test_pass`.
 
 The target value `test_pass` can be recovered and is equal to:
@@ -140,7 +140,7 @@ Our goal is thus to find an appropriate list of 17 values such that the result o
 
 The hash function used, `hash2`, is a Pedersen hash that takes as input two
 field elements and returns a field element. It is computed using elliptic
-curve arithmetic. Given two inputs `a` and `b`, the result is the x-coordinate
+curve arithmetic. Given two inputs `a` and `b`, the result is the $x$-coordinate
 of the point $H$ defined by:
 
 ```math
@@ -163,8 +163,8 @@ That is, we are looking for the discrete logarithm of either
 $H - S - [317]P_2$ or $H' - S - [317]P_2$ with $P_1$ as a base point.
 
 In general, this is a difficult problem. However, we know that the solution
-`a` is the sum of 17 values and that each value can have 4 different
-possibilities. In total, we would have $4^{17} = 2^{34}$ different values to
+`a` is the sum of 17 values and that each value can only be one of four possibilities.
+In total, we would have $4^{17} = 2^{34}$ different values to
 try. While this is much less than the number of possible values in the general
 discrete logarithm problem, this is still too costly in the context of this
 challenge to compute every hash
